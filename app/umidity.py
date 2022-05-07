@@ -24,6 +24,3 @@ def read_data():
         temperatures = []
         humidities = []
         counter = 0
-        end_time = datetime.now()
-        start_time = datetime.now()
-        # ENVIAR MSG
