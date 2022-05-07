@@ -1,12 +1,12 @@
 from setuptools import setup
 
 setup(
-    name="green_controler",
+    name="green_contrller",
     version="0.1.0",
-    packages=["my_project"],
+    packages=["green_controller"],
     entry_points={
         "console_scripts": [
-            "my_project = my_project.__main__:main"
+            "green_controller = green_controller.__main__:main"
         ]
     },
 )
