@@ -1,10 +1,10 @@
 import sys
-from .umidity import read_data
+from .app import run
 
 def main(args=None):
     if args is None:
         args = sys.argv[1:]
-    read_data()
+    run()
 
 if __name__ == "__main__":
     sys.exit(main())

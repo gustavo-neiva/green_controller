@@ -1,17 +1,14 @@
-import Adafruit_DHT
 from datetime import datetime
+from green_controller.dht22_sensor import read
 
-DHT_SENSOR = Adafruit_DHT.DHT22
-DHT_PIN = 4
-
-def read_data():
+def run():
   counter = 0
   start_time = datetime.now()
   print('Inicio: {}'.format(start_time))
   while True:
       temperatures = []
       humidities = []
-      humidity, temperature = Adafruit_DHT.read_retry(DHT_SENSOR, DHT_PIN)
+      humidity, temperature = read()
       temperatures.append(temperature)
       humidities.append(humidity)
       print("Temperatura={0:0.1f}*C  Umidade={1:0.1f}%".format(temperature, humidity))
