@@ -1,0 +1,2 @@
+Adafruit-DHT==1.4.0
+pkg_resources==0.0.0
