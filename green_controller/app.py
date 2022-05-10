@@ -27,10 +27,9 @@ def run():
           humidity_medium_string = f'Umidade={humidity_medium:0.2f}%'
           print('****** MEDIA ******')
           print(f'{temp_medium_string} {humidity_medium_string}')
-          display.lcd_clear()                                
           temperatures = []
           humidities = []
           counter = 0
   except KeyboardInterrupt:
-      print("Limpando!")
       display.lcd_clear()
+      print("Limpando!")
