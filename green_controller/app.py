@@ -2,6 +2,9 @@ from datetime import datetime
 from green_controller.dht22_sensor import read
 from green_controller.dht22_sensor import read
 from green_controller.lcd import Lcd
+from green_controller.relay_controller import RelayController
+
+relay = RelayController.build()
 
 def run():
   display = Lcd()
@@ -13,13 +16,23 @@ def run():
         temperatures = []
         humidities = []
         humidity, temperature = read()
+
         temperatures.append(temperature)
         humidities.append(humidity)
+        
+        if temperature <= 25:
+          relay.on()
+        else:
+          relay.off()
+
         temp = f'Temp.={temperature:0.2f}*C'
         umidade = f'Umidade={humidity:0.2f}%'
-        display.lcd_display_string(temp, 1)  # Write line of text to first line of display
+        print(f'{temp} {umidade}')
+
+        display.lcd_display_string(temp, 1)
         display.lcd_display_string(umidade, 2) 
         counter += 1
+
         if counter >= 130:
           humidity_medium = sum(humidities) / len(humidities)
           temp_medium = sum(temperatures) / len(temperatures)
