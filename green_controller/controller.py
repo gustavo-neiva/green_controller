@@ -57,6 +57,7 @@ class Controller:
         print(f'{temp_medium_string} {humidity_medium_string}')
         self.temperatures = []
         self.humidities = []
+        self.counter = 0
 
   def stop(self):
     print('antes do bug')
