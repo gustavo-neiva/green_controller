@@ -9,8 +9,8 @@ class GracefulKiller:
     signal.signal(signal.SIGTERM, self.exit_gracefully)
 
   def exit_gracefully(self, *args):
-    self.controller.stop()
     self.kill_now = True
+    self.controller.stop()
 
 def run():
     controller = Controller.build()

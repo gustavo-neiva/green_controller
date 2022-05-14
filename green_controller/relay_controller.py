@@ -8,20 +8,10 @@ class RelayController:
     return RelayController()
 
   def on(self, gpio_id):
-    try:
-      GPIO.output(gpio_id, GPIO.LOW)
-    except RuntimeError as e:
-      print('errou on', e)
+    GPIO.output(gpio_id, GPIO.LOW)
 
   def off(self, gpio_id):
-    try:
-      GPIO.output(gpio_id, GPIO.HIGH)
-    except RuntimeError as e:
-      print('errou off', e)
+    GPIO.output(gpio_id, GPIO.HIGH)
 
   def cleanup(self):
-    try:
-      GPIO.setmode(GPIO.BCM)
-      GPIO.cleanup()
-    except RuntimeError as e:
-      print('errou cleanup', e)
+    GPIO.cleanup()
