@@ -17,4 +17,4 @@ class RelayController:
     self.gpio.output(gpio_id, self.gpio.HIGH)
 
   def cleanup(self):
-    GPIO.cleanup()
+    self.gpio.cleanup()
