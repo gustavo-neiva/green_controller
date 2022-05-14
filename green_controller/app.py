@@ -4,8 +4,6 @@ from green_controller.dht22_sensor import read
 from green_controller.dht22_sensor import read
 from green_controller.lcd import Lcd
 from green_controller.relay_controller import RelayController
-import sys
-from .app import run
 
 RELAIS_1_GPIO = 12
 RELAIS_2_GPIO = 13
@@ -28,12 +26,12 @@ def run():
         temperatures.append(temperature)
         humidities.append(humidity)
         
-        if temperature <= 25:
+        if temperature >= 25:
           relay.on(RELAIS_1_GPIO)
           relay.on(RELAIS_2_GPIO)
           relay.off(RELAIS_3_GPIO)
           relay.off(RELAIS_4_GPIO)
-        else:
+        if temperature > 22 and temperature < 25:
           relay.off(RELAIS_1_GPIO)
           relay.off(RELAIS_2_GPIO)
           relay.on(RELAIS_3_GPIO)
@@ -62,6 +60,3 @@ def run():
       sleep(1)
       print("Limpando!")
       display.lcd_clear()
-
-if __name__ == "__main__":
-    sys.exit(run())
