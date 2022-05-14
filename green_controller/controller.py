@@ -72,3 +72,4 @@ class Controller:
     sleep(1)
     self.relay.cleanup()
     print('fim')
+    return 
