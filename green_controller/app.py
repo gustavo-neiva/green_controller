@@ -1,4 +1,5 @@
 from .controller import Controller
+from time import sleep
 import signal
 
 class GracefulKiller:
@@ -10,6 +11,7 @@ class GracefulKiller:
 
   def exit_gracefully(self, *args):
     self.kill_now = True
+    sleep(1)
     self.controller.stop()
 
 def run():

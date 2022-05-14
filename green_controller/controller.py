@@ -70,6 +70,7 @@ class Controller:
     self.display.lcd_display_string("Até!", 2)
     print('limpou texto 2')
     sleep(1)
+    self.display.lcd_clear()
     self.relay.cleanup()
     print('fim')
     return 
