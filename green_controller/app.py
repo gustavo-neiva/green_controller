@@ -3,6 +3,7 @@ from time import sleep
 from green_controller.dht22_sensor import read
 from green_controller.lcd import Lcd
 from green_controller.relay_controller import RelayController
+import sys
 
 RELAIS_1_GPIO = 12
 RELAIS_2_GPIO = 13
@@ -38,7 +39,7 @@ class GreenController:
 
     temp = f'Temp.={temperature:0.2f}*C'
     umidade = f'Umidade={humidity:0.2f}%'
-    print(f'{temp} {umidade}')
+    sys.stdout.write(f'{temp} {umidade}')
 
     self.display.lcd_display_string(temp, 1)
     self.display.lcd_display_string(umidade, 2) 
@@ -49,8 +50,7 @@ class GreenController:
       temp_medium = sum(temperatures) / len(temperatures)
       temp_medium_string = f'Temp.={temp_medium:0.2f}*C'
       humidity_medium_string = f'Umidade={humidity_medium:0.2f}%'
-      print('****** MEDIA ******')
-      print(f'{temp_medium_string} {humidity_medium_string}')
+      sys.stdout.write(f'{temp_medium_string} {humidity_medium_string}')
       temperatures = []
       humidities = []
       self.counter = 0
