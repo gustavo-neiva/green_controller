@@ -1,7 +1,7 @@
 from .app import GreenController
 import signal
 
-controller = GreenController()
+controller = GreenController.build()
 
 class GracefulKiller:
   kill_now = False

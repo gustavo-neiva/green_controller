@@ -1,10 +1,9 @@
 import RPi.GPIO as GPIO
 
-GPIO.setmode(GPIO.BCM)
-
 class RelayController:
   def __init__(self, gpio):
     self.gpio = gpio
+    GPIO.setmode(GPIO.BCM)
 
   @staticmethod
   def build(gpio_ids):
