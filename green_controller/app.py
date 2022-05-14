@@ -1,13 +1,21 @@
 from datetime import datetime
+from time import sleep
 from green_controller.dht22_sensor import read
 from green_controller.dht22_sensor import read
 from green_controller.lcd import Lcd
 from green_controller.relay_controller import RelayController
+import sys
+from .app import run
 
-relay = RelayController.build()
+RELAIS_1_GPIO = 12
+RELAIS_2_GPIO = 13
+RELAIS_3_GPIO = 6
+RELAIS_4_GPIO = 5
+gpio_ids = [RELAIS_1_GPIO, RELAIS_2_GPIO, RELAIS_3_GPIO, RELAIS_4_GPIO]
+relay = RelayController.build(gpio_ids)
+display = Lcd()
 
 def run():
-  display = Lcd()
   counter = 0
   start_time = datetime.now()
   print('Inicio: {}'.format(start_time))
@@ -21,9 +29,15 @@ def run():
         humidities.append(humidity)
         
         if temperature <= 25:
-          relay.on()
+          relay.on(RELAIS_1_GPIO)
+          relay.on(RELAIS_2_GPIO)
+          relay.off(RELAIS_3_GPIO)
+          relay.off(RELAIS_4_GPIO)
         else:
-          relay.off()
+          relay.off(RELAIS_1_GPIO)
+          relay.off(RELAIS_2_GPIO)
+          relay.on(RELAIS_3_GPIO)
+          relay.on(RELAIS_4_GPIO)
 
         temp = f'Temp.={temperature:0.2f}*C'
         umidade = f'Umidade={humidity:0.2f}%'
@@ -44,5 +58,10 @@ def run():
           humidities = []
           counter = 0
   except KeyboardInterrupt:
-      display.lcd_clear()
+      relay.cleanup()
+      sleep(1)
       print("Limpando!")
+      display.lcd_clear()
+
+if __name__ == "__main__":
+    sys.exit(run())
