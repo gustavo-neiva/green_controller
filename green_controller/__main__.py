@@ -1,14 +1,24 @@
-import sys
 from .app import GreenController
 import signal
 
+controller = GreenController()
+
+class GracefulKiller:
+  kill_now = False
+  def __init__(self):
+    signal.signal(signal.SIGINT, self.exit_gracefully)
+    signal.signal(signal.SIGTERM, self.exit_gracefully)
+
+  def exit_gracefully(self, *args):
+    controller.stop()
+    self.kill_now = True
+   
+  print("End of the program. I was killed gracefully :)")
+
 def main(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    controller = GreenController()
-    signal.signal(signal.SIGINT, controller.stop)
-    signal.signal(signal.SIGTERM, controller.stop)
     controller.run()
 
-if __name__ == "__main__":
-    sys.exit(main())
+if __name__ == '__main__':
+    killer = GracefulKiller()
+    while not killer.kill_now:
+        main()

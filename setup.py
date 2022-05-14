@@ -9,11 +9,11 @@ with open('LICENSE') as f:
 setup(
     name="green_controller",
     version='0.1.0',
-    description='Greenhouse microcontroller',
+    description='Greenhouse brain',
     long_description=readme,
     author='Gustavo Neiva',
     author_email='gustavo@neiva.dev',
-    url='https://github.com/kennethreitz/samplemod',
+    url='https://github.com/gustavo-neiva/green_controller',
     license=license,
     packages=find_packages(exclude=('tests', 'docs'))
 )
