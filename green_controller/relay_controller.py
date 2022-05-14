@@ -1,3 +1,4 @@
+from operator import truediv
 import RPi.GPIO as GPIO
 
 class RelayController:
@@ -8,10 +9,19 @@ class RelayController:
     return RelayController()
 
   def on(self, gpio_id):
-    GPIO.output(gpio_id, GPIO.LOW)
+    try:
+      GPIO.output(gpio_id, GPIO.LOW)
+    except RuntimeError as e:
+      print(e)
 
   def off(self, gpio_id):
-    GPIO.output(gpio_id, GPIO.HIGH)
+    try:
+      GPIO.output(gpio_id, GPIO.HIGH)
+    except RuntimeError as e:
+      print(e)
 
   def cleanup(self):
-    GPIO.cleanup()
+    try:
+      GPIO.cleanup()
+    except RuntimeError as e:
+      print(e)
