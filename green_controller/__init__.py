@@ -1,1 +1,1 @@
-from green_controller.app import GreenController
+from green_controller.app import run
