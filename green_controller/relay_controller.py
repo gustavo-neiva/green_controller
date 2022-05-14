@@ -1,4 +1,3 @@
-from operator import truediv
 import RPi.GPIO as GPIO
 
 class RelayController:
@@ -12,16 +11,16 @@ class RelayController:
     try:
       GPIO.output(gpio_id, GPIO.LOW)
     except RuntimeError as e:
-      print(e)
+      print('errou', e)
 
   def off(self, gpio_id):
     try:
       GPIO.output(gpio_id, GPIO.HIGH)
     except RuntimeError as e:
-      print(e)
+      print('errou', e)
 
   def cleanup(self):
     try:
       GPIO.cleanup()
     except RuntimeError as e:
-      print(e)
+      print('errou', e)
