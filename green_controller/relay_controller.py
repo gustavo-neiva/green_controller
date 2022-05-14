@@ -11,16 +11,16 @@ class RelayController:
     try:
       GPIO.output(gpio_id, GPIO.LOW)
     except RuntimeError as e:
-      print('errou', e)
+      print('errou on', e)
 
   def off(self, gpio_id):
     try:
       GPIO.output(gpio_id, GPIO.HIGH)
     except RuntimeError as e:
-      print('errou', e)
+      print('errou off', e)
 
   def cleanup(self):
     try:
       GPIO.cleanup()
     except RuntimeError as e:
-      print('errou', e)
+      print('errou cleanup', e)
