@@ -21,6 +21,7 @@ class RelayController:
 
   def cleanup(self):
     try:
+      GPIO.setmode(GPIO.BCM)
       GPIO.cleanup()
     except RuntimeError as e:
       print('errou cleanup', e)
