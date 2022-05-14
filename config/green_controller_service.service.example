@@ -4,8 +4,6 @@ Description=Green Controller Service
 [Service]
 ExecStart=make -C /home/admin/code/green_controller_module/ run
 
-Restart=on-failure
-
 Type=notify
 
 [Install]

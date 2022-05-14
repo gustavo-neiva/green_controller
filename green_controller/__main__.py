@@ -13,12 +13,8 @@ class GracefulKiller:
     controller.stop()
     self.kill_now = True
    
-  print("End of the program. I was killed gracefully :)")
-
-def main(args=None):
-    controller.run()
 
 if __name__ == '__main__':
     killer = GracefulKiller()
     while not killer.kill_now:
-        main()
+        controller.run()

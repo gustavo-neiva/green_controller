@@ -15,17 +15,15 @@ class GreenController:
     self.active = True
     self.relay = RelayController.build(gpio_ids)
     self.display = Lcd()
+    self.temperatures = []
+    self.humidities = []
+    self.counter = 0
 
   def run(self):
-    counter = 0
-    start_time = datetime.now()
-    print('Inicio: {}'.format(start_time))
-    temperatures = []
-    humidities = []
     humidity, temperature = read()
 
-    temperatures.append(temperature)
-    humidities.append(humidity)
+    self.temperatures.append(temperature)
+    self.humidities.append(humidity)
     
     if temperature >= 25:
       self.relay.on(RELAIS_1_GPIO)
@@ -44,9 +42,9 @@ class GreenController:
 
     self.display.lcd_display_string(temp, 1)
     self.display.lcd_display_string(umidade, 2) 
-    counter += 1
+    self.counter += 1
 
-    if counter >= 130:
+    if self.counter >= 130:
       humidity_medium = sum(humidities) / len(humidities)
       temp_medium = sum(temperatures) / len(temperatures)
       temp_medium_string = f'Temp.={temp_medium:0.2f}*C'
@@ -55,7 +53,7 @@ class GreenController:
       print(f'{temp_medium_string} {humidity_medium_string}')
       temperatures = []
       humidities = []
-      counter = 0
+      self.counter = 0
 
   def stop(self):
     self.active = False
