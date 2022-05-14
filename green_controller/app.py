@@ -18,7 +18,7 @@ class GreenController:
     self.counter = 0
 
   @staticmethod
-  def build(gpio_ids):
+  def build():
     gpio_ids = [RELAIS_1_GPIO, RELAIS_2_GPIO, RELAIS_3_GPIO, RELAIS_4_GPIO]
     relay_controller = RelayController.build(gpio_ids)
     display_controller = Lcd()
