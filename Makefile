@@ -2,4 +2,7 @@ init:
 	pip install -r requirements.txt
 
 run:
-	python3 -m green_controller
+ 	nohup python -m green_controller & 
+
+stop:
+	python3 green_controller/app.py

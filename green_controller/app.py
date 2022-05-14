@@ -12,13 +12,14 @@ RELAIS_4_GPIO = 5
 gpio_ids = [RELAIS_1_GPIO, RELAIS_2_GPIO, RELAIS_3_GPIO, RELAIS_4_GPIO]
 relay = RelayController.build(gpio_ids)
 display = Lcd()
+active = True
 
 def run():
   counter = 0
   start_time = datetime.now()
   print('Inicio: {}'.format(start_time))
   try:
-    while True:
+    while active:
         temperatures = []
         humidities = []
         humidity, temperature = read()
@@ -60,3 +61,10 @@ def run():
       sleep(1)
       print("Limpando!")
       display.lcd_clear()
+
+def stop():
+  active = False
+  relay.cleanup()
+  sleep(1)
+  print("Limpando!")
+  display.lcd_clear()
