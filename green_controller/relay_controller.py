@@ -17,4 +17,5 @@ class RelayController:
     self.gpio.output(gpio_id, self.gpio.HIGH)
 
   def cleanup(self):
+    GPIO.setmode(GPIO.BCM)
     self.gpio.cleanup()

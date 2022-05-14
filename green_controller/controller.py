@@ -59,9 +59,9 @@ class Controller:
         self.humidities = []
 
   def stop(self):
-    sleep(1)
-    self.display.lcd_display_string("Limpando!", 1)
-    self.display.lcd_display_string("Até!", 1)
     print("Limpando!")
+    self.display.lcd_display_string("Limpando!", 1)
+    self.display.lcd_display_string("Até!", 2)
+    sleep(1)
     self.display.lcd_clear()
     self.relay.cleanup()
