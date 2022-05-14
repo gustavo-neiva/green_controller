@@ -13,7 +13,7 @@ class Controller:
   @staticmethod
   def build():
     relay_controller = RelayController.build(relay_gpio_ids)
-    display_controller = DisplayController()
+    display_controller = DisplayController.build()
     return Controller(relay_controller, display_controller)
 
   def __init__(self, relay_controller, display_controller):
