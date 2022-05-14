@@ -1,7 +1,6 @@
 from datetime import datetime
 from time import sleep
 from green_controller.dht22_sensor import read
-from green_controller.dht22_sensor import read
 from green_controller.lcd import Lcd
 from green_controller.relay_controller import RelayController
 
