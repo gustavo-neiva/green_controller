@@ -3,8 +3,11 @@ Description=Green Controller Service
 
 [Service]
 ExecStart=make -C /home/admin/code/green_controller_module/ run
-
-Type=notify
+StandardOutput=journal
+SyslogIdentifier=simple
+Restart=on-failure
+TimeoutStopUSec=infinity
+Type=simple
 
 [Install]
 WantedBy=default.target
