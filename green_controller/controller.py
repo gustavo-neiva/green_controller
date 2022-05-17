@@ -36,9 +36,11 @@ class Controller:
       hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
       self.display.print(temp, 1)
       self.display.print(umidade, 2)
+      self.display.clear()
       sleep(4)
       self.display.print(ip, 1)
       self.display.print(hora, 2)
+      self.display.clear()
 
   def stop(self):
     self.display.clear()
