@@ -33,7 +33,7 @@ class Controller:
       temp = f'Temp.={temperature:0.2f}*C'
       umidade = f'Umidade={humidity:0.2f}%'
 
-      print(self.find_interface())
+      print(self.parse_ip())
 
       self.display.print(temp, 1)
       self.display.print(umidade, 2)
@@ -46,14 +46,6 @@ class Controller:
     self.relay.cleanup()
     self.display.clear()
 
-  def find_interface(self):
-    find_device = "ip addr show"
-    interface_parse = self.run_cmd(find_device)
-    for line in interface_parse.splitlines():
-        if "state UP" in line:
-            dev_name = line.split(':')[1]
-    return dev_name
-
   def parse_ip(self):
     interface = self.find_interface()
     find_ip = "ip addr show %s" % interface
@@ -64,6 +56,14 @@ class Controller:
             ip = line.split(' ')[5]
             ip = ip.split('/')[0]
     return ip
+
+  def find_interface(self):
+    find_device = "ip addr show"
+    interface_parse = self.run_cmd(find_device)
+    for line in interface_parse.splitlines():
+        if "state UP" in line:
+            dev_name = line.split(':')[1]
+    return dev_name
 
   def run_cmd(self, cmd):
     p = Popen(cmd, shell=True, stdout=PIPE)
