@@ -1,5 +1,7 @@
+from subprocess import Popen, PIPE
+from datetime import datetime
 from time import sleep
-from green_controller.dht22_sensor import read
+from green_controller.sensor_controller import SensorController
 from green_controller.display_controller import DisplayController
 from green_controller.relay_controller import RelayController
 
@@ -14,52 +16,56 @@ class Controller:
   def build():
     relay_controller = RelayController.build(relay_gpio_ids)
     display_controller = DisplayController.build()
-    return Controller(relay_controller, display_controller)
+    sensor_controller = SensorController()
+    return Controller(relay_controller, display_controller, sensor_controller)
 
-  def __init__(self, relay_controller, display_controller):
+  def __init__(self, relay_controller, display_controller, sensor_controller):
     self.relay = relay_controller
     self.display = display_controller
+    self.sensor = sensor_controller
     self.temperatures = []
     self.humidities = []
     self.counter = 0
 
   def start(self):
-    humidity, temperature = read()
+    humidity, temperature = self.sensor.read()
     if humidity is not None and temperature is not None:
-      self.temperatures.append(temperature)
-      self.humidities.append(humidity)
-      
-      if temperature >= 25:
-        self.relay.on(VENT_1)
-        self.relay.on(VENT_2)
-      if temperature > 22 and temperature < 25:
-        self.relay.off(VENT_1)
-        self.relay.off(VENT_2)
-
       temp = f'Temp.={temperature:0.2f}*C'
       umidade = f'Umidade={humidity:0.2f}%'
-      print(f'{temp} {umidade}')
+
+      print(self.find_interface())
 
       self.display.print(temp, 1)
-      self.display.print(umidade, 2) 
-      self.counter += 1
-
-      if self.counter >= 130:
-        humidity_medium = sum(self.humidities) / len(self.humidities)
-        temp_medium = sum(self.temperatures) / len(self.temperatures)
-        temp_medium_string = f'Temp.={temp_medium:0.2f}*C'
-        humidity_medium_string = f'Umidade={humidity_medium:0.2f}%'
-        print(f'{temp_medium_string} {humidity_medium_string}')
-        self.temperatures = []
-        self.humidities = []
-        self.counter = 0
+      self.display.print(umidade, 2)
 
   def stop(self):
-    print("Limpando!")
     self.display.clear()
     self.display.print("Limpando!", 1)
     self.display.print("Vlw flw!", 2)
-    sleep(1)
-    self.display.clear()
+    sleep(2)
     self.relay.cleanup()
-    return 
+    self.display.clear()
+
+  def find_interface(self):
+    find_device = "ip addr show"
+    interface_parse = self.run_cmd(find_device)
+    for line in interface_parse.splitlines():
+        if "state UP" in line:
+            dev_name = line.split(':')[1]
+    return dev_name
+
+  def parse_ip(self):
+    interface = self.find_interface()
+    find_ip = "ip addr show %s" % interface
+    find_ip = "ip addr show %s" % interface
+    ip_parse = self.run_cmd(find_ip)
+    for line in ip_parse.splitlines():
+        if "inet " in line:
+            ip = line.split(' ')[5]
+            ip = ip.split('/')[0]
+    return ip
+
+  def run_cmd(self, cmd):
+    p = Popen(cmd, shell=True, stdout=PIPE)
+    output = p.communicate()[0]
+    return output.decode('ascii')
