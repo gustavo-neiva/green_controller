@@ -32,11 +32,13 @@ class Controller:
     if humidity is not None and temperature is not None:
       temp = f'Temp.={temperature:0.2f}*C'
       umidade = f'Umidade={humidity:0.2f}%'
-
-      print(self.parse_ip())
-
+      ip = f'IP={self.parse_ip()}'
+      hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
       self.display.print(temp, 1)
       self.display.print(umidade, 2)
+      sleep(4)
+      self.display.print(ip, 1)
+      self.display.print(hora, 2)
 
   def stop(self):
     self.display.clear()
