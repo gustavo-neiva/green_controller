@@ -32,6 +32,7 @@ class Controller:
     humidity, temperature = self.sensor.read()
     if humidity is not None and temperature is not None:
       hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+      print(hora, temperature, humidity)
       await self.view.display_data(temperature, humidity, self.ip, hora)
 
 

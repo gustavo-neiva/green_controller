@@ -14,13 +14,13 @@ class View:
       temp = f'Temp.={temperature:0.2f}*C'
       umidade = f'Umidade={humidity:0.2f}%'
       ip = f'IP={ip}'
+      self.display.clear()
       self.display.print(temp, 1)
       self.display.print(umidade, 2)
       await asyncio.sleep(3)
       self.display.clear()
       self.display.print(ip, 1)
       self.display.print(hour, 2)
-      self.display.clear()
       await asyncio.sleep(3)
     
   def turn_off(self):
