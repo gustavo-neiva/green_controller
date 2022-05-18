@@ -32,9 +32,13 @@ class Controller:
     humidity, temperature = self.sensor.read()
     if humidity is not None and temperature is not None:
       hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+      if(temperature > 22):
+         self.relay.on(LUZ_1)
+         self.relay.off(VENT_1)
+         self.relay.off(LUZ_2)
+         self.relay.off(VENT_2)
       print(hora, temperature, humidity)
       await self.view.display_data(temperature, humidity, self.ip, hora)
-
 
   def stop(self):
     self.view.turn_off()
