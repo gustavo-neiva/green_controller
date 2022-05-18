@@ -1,6 +1,7 @@
 from .controller import Controller
 from time import sleep
 import signal
+import asyncio
 
 class GracefulKiller:
   kill_now = False
@@ -11,9 +12,9 @@ class GracefulKiller:
   def exit_gracefully(self, *args):
     self.kill_now = True
 
-def run():
+async def run():
     controller = Controller.build()
     killer = GracefulKiller()
     while not killer.kill_now:
-        controller.start()
+      await controller.start()
     controller.stop()
