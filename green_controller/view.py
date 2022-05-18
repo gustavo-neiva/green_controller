@@ -1,5 +1,4 @@
 import asyncio
-from green_controller.lcd import Lcd
 from green_controller.display_controller import DisplayController
 
 class View:
