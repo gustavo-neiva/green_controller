@@ -1,4 +1,5 @@
 import asyncio
+from time import sleep
 from green_controller.display_controller import DisplayController
 
 class View:
@@ -27,3 +28,5 @@ class View:
     self.display.clear()
     self.display.print("Limpando!", 1)
     self.display.print("Vlw flw!", 2)
+    sleep(2)
+    self.display.clear()
