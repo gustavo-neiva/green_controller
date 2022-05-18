@@ -1,8 +1,7 @@
 from subprocess import Popen, PIPE
 from datetime import datetime
-from time import sleep
 from green_controller.sensor_controller import SensorController
-from green_controller.display_controller import DisplayController
+from green_controller.view import View
 from green_controller.relay_controller import RelayController
 
 LUZ_1 = 12
@@ -15,40 +14,29 @@ class Controller:
   @staticmethod
   def build():
     relay_controller = RelayController.build(relay_gpio_ids)
-    display_controller = DisplayController.build()
+    view = View.build()
     sensor_controller = SensorController()
-    return Controller(relay_controller, display_controller, sensor_controller)
+    return Controller(relay_controller, view, sensor_controller)
 
-  def __init__(self, relay_controller, display_controller, sensor_controller):
+  def __init__(self, relay_controller, view, sensor_controller):
     self.relay = relay_controller
-    self.display = display_controller
+    self.view = view
     self.sensor = sensor_controller
     self.temperatures = []
     self.humidities = []
     self.counter = 0
+    self.ip = self.parse_ip()
 
   def start(self):
     humidity, temperature = self.sensor.read()
     if humidity is not None and temperature is not None:
-      temp = f'Temp.={temperature:0.2f}*C'
-      umidade = f'Umidade={humidity:0.2f}%'
-      ip = f'IP={self.parse_ip()}'
       hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-      self.display.print(temp, 1)
-      self.display.print(umidade, 2)
-      self.display.clear()
-      sleep(4)
-      self.display.print(ip, 1)
-      self.display.print(hora, 2)
-      self.display.clear()
+      self.view.display_data(temperature, humidity, self.ip, hora)
+
 
   def stop(self):
-    self.display.clear()
-    self.display.print("Limpando!", 1)
-    self.display.print("Vlw flw!", 2)
-    sleep(2)
+    self.view.turn_off()
     self.relay.cleanup()
-    self.display.clear()
 
   def parse_ip(self):
     interface = self.find_interface()
