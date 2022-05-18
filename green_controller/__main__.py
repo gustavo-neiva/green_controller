@@ -1,7 +1,6 @@
 from .app import run
-   
+import asyncio
+
 if __name__ == '__main__':
-    try:
-        run()
-    except Exception as e:
-        print(e)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run())
