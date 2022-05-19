@@ -1,5 +1,5 @@
 from time import sleep
-import threading
+import multiprocessing
 from green_controller.display_controller import DisplayController
 
 class View:
@@ -25,11 +25,11 @@ class View:
       sleep(3)
 
   def display_data(self, temperature, humidity, ip, hour):
-    self.thread = threading.Thread(target=self._display_data, args=(temperature, humidity, ip, hour))
-    self.thread.start()
+    self.process = multiprocessing.Process(target=self._display_data, args=(temperature, humidity, ip, hour))
+    self.process.start()
     
   def turn_off(self):
-    self.thread.join()
+    self.process.terminate()
     self.display.clear()
     self.display.print("Limpando!", 1)
     self.display.print("Vlw flw!", 2)
