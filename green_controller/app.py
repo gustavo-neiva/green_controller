@@ -1,5 +1,6 @@
 from .controller import Controller
 from time import sleep
+import threading
 import signal
 import asyncio
 from flask import Flask
@@ -16,12 +17,17 @@ class GracefulKiller:
     self.kill_now = True
 
 @app.route('/')
-async def index():
-    controller = Controller.build()
-    killer = GracefulKiller()
-    while not killer.kill_now:
-      await controller.start()
-    controller.stop()
+def index():
+  return 'Hello world'
 
-async def run():
-    await app.run(debug=True, host='0.0.0.0')
+async def run_sensors():
+  controller = Controller.build()
+  killer = GracefulKiller()
+  while not killer.kill_now:
+    await controller.start()
+  controller.stop()
+
+def run():
+  thread = threading.Thread(target=run_sensors)
+  thread.start()
+  app.run(debug=True, host='0.0.0.0')
