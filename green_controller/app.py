@@ -2,6 +2,13 @@ from .controller import Controller
 from time import sleep
 import signal
 import asyncio
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Hello world'
 
 class GracefulKiller:
   kill_now = False
@@ -13,6 +20,7 @@ class GracefulKiller:
     self.kill_now = True
 
 async def run():
+    app.run(debug=True, host='0.0.0.0')
     controller = Controller.build()
     killer = GracefulKiller()
     while not killer.kill_now:
