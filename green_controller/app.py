@@ -23,14 +23,12 @@ def index():
 def run_flask():
   app.run(debug=True, host='0.0.0.0')
 
-def run_sensors():
+def run():
   controller = Controller.build()
   killer = GracefulKiller()
+  thread = threading.Thread(target=run_flask)
+  thread.start()
   while not killer.kill_now:
     controller.start()
   controller.stop()
 
-def run():
-  thread = threading.Thread(target=run_flask)
-  thread.start()
-  run_sensors()
