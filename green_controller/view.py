@@ -25,9 +25,11 @@ class View:
       sleep(3)
 
   def display_data(self, temperature, humidity, ip, hour):
-    threading.Thread(target=self._display_data, args=(temperature, humidity, ip, hour)).start()
+    self.thread = threading.Thread(target=self._display_data, args=(temperature, humidity, ip, hour))
+    self.thread.start()
     
   def turn_off(self):
+    self.thread.join()
     self.display.clear()
     self.display.print("Limpando!", 1)
     self.display.print("Vlw flw!", 2)
