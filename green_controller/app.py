@@ -1,5 +1,4 @@
 from .controller import Controller
-from time import sleep
 import threading
 import signal
 import asyncio
@@ -20,14 +19,14 @@ class GracefulKiller:
 def index():
   return 'Hello world'
 
-async def run_sensors():
+def run_sensors():
   controller = Controller.build()
   killer = GracefulKiller()
   while not killer.kill_now:
-    await controller.start()
+    controller.start()
   controller.stop()
 
-async def run():
+def run():
   thread = threading.Thread(target=run_sensors)
-  await thread.start()
+  thread.start()
   app.run(debug=True, host='0.0.0.0')
