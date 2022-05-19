@@ -27,7 +27,7 @@ async def run_sensors():
     await controller.start()
   controller.stop()
 
-def run():
+async def run():
   thread = threading.Thread(target=run_sensors)
-  thread.start()
+  await thread.start()
   app.run(debug=True, host='0.0.0.0')
