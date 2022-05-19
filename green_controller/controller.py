@@ -1,6 +1,5 @@
 from subprocess import Popen, PIPE
 from datetime import datetime
-import asyncio
 from green_controller.sensor_controller import SensorController
 from green_controller.view import View
 from green_controller.relay_controller import RelayController
@@ -28,7 +27,7 @@ class Controller:
     self.counter = 0
     self.ip = self.parse_ip()
 
-  async def start(self):
+  def start(self):
     humidity, temperature = self.sensor.read()
     if humidity is not None and temperature is not None:
       hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -37,8 +36,7 @@ class Controller:
          self.relay.off(VENT_1)
          self.relay.off(LUZ_2)
          self.relay.off(VENT_2)
-      print(hora, temperature, humidity)
-      await self.view.display_data(temperature, humidity, self.ip, hora)
+      self.view.display_data(temperature, humidity, self.ip, hora)
 
   def stop(self):
     self.view.turn_off()
