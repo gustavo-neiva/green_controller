@@ -2,6 +2,7 @@ from .controller import Controller
 from time import sleep
 import multiprocessing
 import signal
+import asyncio
 from flask import Flask
 
 app = Flask(__name__)
@@ -28,7 +29,7 @@ def run():
   process = multiprocessing.Process(target=run_flask)
   process.start()
   while not killer.kill_now:
-    controller.start()
+    asyncio.run(controller.start())
   process.terminate()
   controller.stop()
 
