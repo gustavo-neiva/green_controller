@@ -28,11 +28,11 @@ class Controller:
     self.counter = 0
     self.ip = self.parse_ip()
 
-  async def start(self):
+  def start(self):
     humidity, temperature = self.sensor.read()
     if humidity is not None and temperature is not None:
       hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-      await asyncio.run(self.view.display_data(temperature, humidity, self.ip, hora))
+      asyncio.run(self.view.display_data(temperature, humidity, self.ip, hora))
 
   def stop(self):
     self.view.turn_off()
