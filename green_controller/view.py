@@ -26,7 +26,6 @@ class View:
       await asyncio.sleep(3)
     
   def turn_off(self):
-    self.process.terminate()
     self.display.clear()
     self.display.print("Limpando!", 1)
     self.display.print("Vlw flw!", 2)
