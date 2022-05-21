@@ -1,4 +1,5 @@
 import Adafruit_DHT
+import asyncio
 
 DHT_SENSOR = Adafruit_DHT.DHT22
 DHT_PIN = 4
@@ -9,7 +10,7 @@ class SensorController:
     self.sensor = sensor
     self.pin = pin
 
-  def read(self):
-    humidity, temperature = Adafruit_DHT.read_retry(self.sensor, self.pin)
+  async def read(self):
+    humidity, temperature = await Adafruit_DHT.read_retry(self.sensor, self.pin)
     if humidity is not None and temperature is not None:
       return humidity, temperature
