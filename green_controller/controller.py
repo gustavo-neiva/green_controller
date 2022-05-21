@@ -29,7 +29,7 @@ class Controller:
     self.ip = self.parse_ip()
 
   def start(self):
-    humidity, temperature = asyncio.run(self.sensor.read())
+    humidity, temperature = self.sensor.read()
     if humidity is not None and temperature is not None:
       hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
       asyncio.run(self.view.display_data(temperature, humidity, self.ip, hora))
