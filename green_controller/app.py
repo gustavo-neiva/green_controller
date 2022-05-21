@@ -29,7 +29,8 @@ def run():
   process = multiprocessing.Process(target=run_flask)
   process.start()
   while not killer.kill_now:
-    asyncio.run(controller.start())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(controller.start())
   process.terminate()
   controller.stop()
 
