@@ -32,10 +32,17 @@ class Controller:
     self.counter = 0
     self.ip = self.parse_ip()
 
+  def start_sensor(self):
+    humidity, temperature = asyncio.run(self.sensor.read())
+    self.repository.save_measurement(humidity, temperature)
+  
+  def start_display(self):
+    humidity, temperature = self.repository.get_last_measurement()
+    asyncio.run(self.view.display_data(temperature, humidity, self.ip))
+
   def start(self):
-      humidity, temperature = asyncio.run(self.sensor.read())
-      self.repository.save_measurement(humidity, temperature)
-      asyncio.run(self.view.display_data(temperature, humidity, self.ip))
+    self.start_sensor()
+    self.start_display()
 
   def stop(self):
     self.view.turn_off()
