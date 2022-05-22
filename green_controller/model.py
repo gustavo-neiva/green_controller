@@ -15,4 +15,4 @@ class Measurements(peewee.Model):
         order_by = ('id',)
 
 
-peewee.create_model_tables([Measurements])
+peewee.create_tables([Measurements])
