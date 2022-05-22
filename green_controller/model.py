@@ -5,8 +5,8 @@ db = peewee.SqliteDatabase('./db/green_controller.db')
 
 class Measurements(peewee.Model):
     id = peewee.IntegerField(unique=True)
-    temperature = peewee.Integer()
-    humidity = peewee.Integer()
+    temperature = peewee.IntegerField()
+    humidity = peewee.IntegerField()
     created_at = peewee.DateField(default= datetime.datetime.now().astimezone())
 
     class Meta:
