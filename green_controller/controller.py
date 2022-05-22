@@ -1,9 +1,11 @@
+from re import S
 from subprocess import Popen, PIPE
 from datetime import datetime
 import asyncio
 from green_controller.sensor_controller import SensorController
 from green_controller.view import View
 from green_controller.relay_controller import RelayController
+from green_controller.repository import Repository
 
 LUZ_1 = 12
 VENT_1 = 13
@@ -17,22 +19,23 @@ class Controller:
     relay_controller = RelayController.build(relay_gpio_ids)
     view = View.build()
     sensor_controller = SensorController()
-    return Controller(relay_controller, view, sensor_controller)
+    repository = Repository()
+    return Controller(relay_controller, view, sensor_controller, repository)
 
-  def __init__(self, relay_controller, view, sensor_controller):
+  def __init__(self, relay_controller, view, sensor_controller, repository):
     self.relay = relay_controller
     self.view = view
     self.sensor = sensor_controller
+    self.repository = repository
     self.temperatures = []
     self.humidities = []
     self.counter = 0
     self.ip = self.parse_ip()
 
   def start(self):
-    humidity, temperature = self.sensor.read()
-    if humidity is not None and temperature is not None:
-      hora = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-      asyncio.run(self.view.display_data(temperature, humidity, self.ip, hora))
+      humidity, temperature = asyncio.run(self.sensor.read())
+      self.repository.save_measurement(humidity, temperature)
+      asyncio.run(self.view.display_data(temperature, humidity, self.ip))
 
   def stop(self):
     self.view.turn_off()

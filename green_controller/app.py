@@ -12,7 +12,7 @@ class GracefulKiller:
     signal.signal(signal.SIGINT, self.exit_gracefully)
     signal.signal(signal.SIGTERM, self.exit_gracefully)
 
-  def exit_gracefully(self, *args):
+  def exit_gracefully(self):
     self.kill_now = True
 
 @app.route('/')
@@ -25,10 +25,11 @@ def run_flask():
 def run():
   controller = Controller.build()
   killer = GracefulKiller()
-  process = multiprocessing.Process(target=run_flask)
-  process.start()
+  server = multiprocessing.Process(target=run_flask)
+  server.start()
   while not killer.kill_now:
     controller.start()
-  process.terminate()
+  server.terminate()
+  server.join()
   controller.stop()
 

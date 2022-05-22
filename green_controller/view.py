@@ -1,5 +1,5 @@
 from time import sleep
-import multiprocessing
+from datetime import datetime
 import asyncio
 from green_controller.display_controller import DisplayController
 
@@ -12,18 +12,23 @@ class View:
   def __init__(self, display):
     self.display = display
 
-  async def display_data(self, temperature, humidity, ip, hour):
+  async def display_data(self, temperature, humidity, ip):
+      hour = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
       temp = f'Temp.={temperature:0.2f}*C'
       umidade = f'Umidade={humidity:0.2f}%'
       ip = f'IP={ip}'
+      print('indo printar temp')
+      await asyncio.sleep(3)
       self.display.clear()
       self.display.print(temp, 1)
       self.display.print(umidade, 2)
+      print('pritou temp')
       await asyncio.sleep(3)
+      print('agora é ip')
       self.display.clear()
       self.display.print(ip, 1)
       self.display.print(hour, 2)
-      await asyncio.sleep(3)
+      print('foi')
     
   def turn_off(self):
     self.display.clear()
