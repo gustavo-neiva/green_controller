@@ -4,7 +4,7 @@ import datetime
 db = SqliteDatabase('./db/green_controller.db')
 
 class Measurements(Model):
-    id = IntegerField(unique=True)
+    id = PrimaryKeyField()
     temperature = IntegerField()
     humidity = IntegerField()
     created_at = DateField(default= datetime.datetime.now().astimezone())

@@ -12,7 +12,8 @@ class GracefulKiller:
     signal.signal(signal.SIGINT, self.exit_gracefully)
     signal.signal(signal.SIGTERM, self.exit_gracefully)
 
-  def exit_gracefully(self):
+  def exit_gracefully(self, *args):
+    print(args)
     self.kill_now = True
 
 @app.route('/')
