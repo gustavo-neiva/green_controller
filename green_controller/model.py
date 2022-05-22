@@ -1,18 +1,18 @@
-import peewee
+from peewee import *
 import datetime
 
-db = peewee.SqliteDatabase('./db/green_controller.db')
+db = SqliteDatabase('./db/green_controller.db')
 
-class Measurements(peewee.Model):
-    id = peewee.IntegerField(unique=True)
-    temperature = peewee.IntegerField()
-    humidity = peewee.IntegerField()
-    created_at = peewee.DateField(default= datetime.datetime.now().astimezone())
+class Measurements(Model):
+    id = IntegerField(unique=True)
+    temperature = IntegerField()
+    humidity = IntegerField()
+    created_at = DateField(default= datetime.datetime.now().astimezone())
 
     class Meta:
         database = db
         db_table = 'Measurements'
         order_by = ('id',)
 
-
-peewee.create_tables([Measurements])
+db.connect()
+db.create_tables([Measurements])
