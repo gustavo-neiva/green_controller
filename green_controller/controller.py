@@ -37,9 +37,8 @@ class Controller:
   
   def start_display(self):
     humidity, temperature = self.repository.get_last_measurement()
-    scheduler.add_job(self.view.display_data(temperature, humidity, self.ip), 'interval', seconds=3)
-    scheduler.start()
-    
+    self.scheduler.add_job(self.view.display_data(temperature, humidity, self.ip), 'interval', seconds=3)
+    self.scheduler.start()
 
   def start_sensor(self):
     humidity, temperature = asyncio.run(self.sensor.read())
@@ -50,6 +49,7 @@ class Controller:
     self.start_sensor()
 
   def stop(self):
+    self.scheduler.shutdown()
     self.view.turn_off()
     self.relay.cleanup()
 
