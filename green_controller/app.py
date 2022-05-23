@@ -29,11 +29,12 @@ def run():
   killer = GracefulKiller()
   server = multiprocessing.Process(target=run_flask)
   server.start()
-  scheduler.add_job(controller.start_display, 'interval', seconds=3)
+  scheduler.add_job(controller.start_display, 'interval', seconds=4)
   scheduler.start()
   while not killer.kill_now:
     controller.start_sensor()
   server.terminate()
   server.join()
   controller.stop()
+  scheduler.shutdown()
 

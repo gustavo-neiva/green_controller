@@ -41,7 +41,6 @@ class Controller:
     self.repository.save_measurement(humidity, temperature)
 
   def stop(self):
-    self.scheduler.shutdown()
     self.view.turn_off()
     self.relay.cleanup()
 
