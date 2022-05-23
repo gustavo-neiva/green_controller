@@ -28,8 +28,9 @@ def run():
   killer = GracefulKiller()
   server = multiprocessing.Process(target=run_flask)
   server.start()
+  controller.start_display()
   while not killer.kill_now:
-    controller.start()
+    controller.start_sensor()
   server.terminate()
   server.join()
   controller.stop()
