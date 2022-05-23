@@ -24,7 +24,6 @@ def index():
   return 'Hello world'
 
 def run_flask():
-  print('flask foi')
   app.run(debug=True, host='0.0.0.0', use_reloader=False, threaded=True)
 
 def run():
@@ -33,7 +32,6 @@ def run():
   killer = GracefulKiller(scheduler)
   controller.start_display()
   scheduler.add_job(controller.start_display, 'interval', seconds=5)
-  print('iniciou jobs')
   scheduler.start()
   thread.start()
   while not killer.kill_now:
