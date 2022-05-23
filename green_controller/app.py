@@ -18,9 +18,8 @@ class GracefulKiller:
     signal.signal(signal.SIGTERM, self.exit_gracefully)
 
   def exit_gracefully(self, *args):
-    print(args)
-    self.scheduler.shutdown()
     self.kill_now = True
+    self.scheduler.shutdown()
     self.thread.join()
     self.controller.stop()
 
@@ -30,7 +29,7 @@ def index():
 
 def run_flask():
   print('flask foi')
-  app.run(debug=True, host='0.0.0.0', use_reloader=False)
+  app.run(debug=True, host='0.0.0.0', use_reloader=False, threaded=True)
 
 def run():
   controller = Controller.build()
