@@ -23,7 +23,7 @@ def index():
 
 def run_flask():
   print('flask foi')
-  app.run(debug=True, host='0.0.0.0', suse_reloader=False)
+  app.run(debug=True, host='0.0.0.0', use_reloader=False)
 
 def run():
   controller = Controller.build()
