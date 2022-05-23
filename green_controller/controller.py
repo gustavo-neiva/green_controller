@@ -2,7 +2,6 @@ from re import S
 from subprocess import Popen, PIPE
 from threading import Thread
 import asyncio
-from apscheduler.schedulers.background import BackgroundScheduler
 from green_controller.sensor_controller import SensorController
 from green_controller.view import View
 from green_controller.relay_controller import RelayController
@@ -21,15 +20,13 @@ class Controller:
     view = View.build()
     sensor_controller = SensorController()
     repository = Repository()
-    scheduler = BackgroundScheduler()
-    return Controller(relay_controller, view, sensor_controller, repository, scheduler)
+    return Controller(relay_controller, view, sensor_controller, repository)
 
-  def __init__(self, relay_controller, view, sensor_controller, repository, scheduler):
+  def __init__(self, relay_controller, view, sensor_controller, repository):
     self.relay = relay_controller
     self.view = view
     self.sensor = sensor_controller
     self.repository = repository
-    self.scheduler = scheduler
     self.temperatures = []
     self.humidities = []
     self.counter = 0
@@ -37,8 +34,7 @@ class Controller:
   
   def start_display(self):
     humidity, temperature = self.repository.get_last_measurement()
-    self.scheduler.add_job(self.view.display_data(temperature, humidity, self.ip), 'interval', seconds=3)
-    self.scheduler.start()
+    self.view.display_data(temperature, humidity, self.ip)
 
   def start_sensor(self):
     humidity, temperature = asyncio.run(self.sensor.read())

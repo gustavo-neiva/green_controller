@@ -1,11 +1,12 @@
 from .controller import Controller
 from time import sleep
 import multiprocessing
-from threading import Thread
 import signal
 from flask import Flask
+from apscheduler.schedulers.background import BackgroundScheduler
 
 app = Flask(__name__)
+scheduler = BackgroundScheduler()
 
 class GracefulKiller:
   kill_now = False
@@ -28,7 +29,8 @@ def run():
   killer = GracefulKiller()
   server = multiprocessing.Process(target=run_flask)
   server.start()
-  controller.start_display()
+  scheduler.add_job(controller.start_display, 'interval', seconds=3)
+  scheduler.start()
   while not killer.kill_now:
     controller.start_sensor()
   server.terminate()
