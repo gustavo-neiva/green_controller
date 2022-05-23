@@ -30,7 +30,7 @@ def run_flask():
 def run():
   controller = Controller.build()
   thread = threading.Thread(target=run_flask)
-  killer = GracefulKiller(thread, scheduler, controller)
+  killer = GracefulKiller(scheduler)
   controller.start_display()
   scheduler.add_job(controller.start_display, 'interval', seconds=5)
   print('iniciou jobs')
