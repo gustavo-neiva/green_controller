@@ -28,7 +28,7 @@ def run_flask():
 def run():
   controller = Controller.build()
   killer = GracefulKiller()
-  scheduler.add_job(controller.start_display, 'interval', seconds=3)
+  scheduler.add_job(controller.start_display, 'interval', seconds=5)
   print('iniciou jobs')
   scheduler.start()
   server = threading.Thread(target=run_flask)
