@@ -10,14 +10,19 @@ scheduler = BackgroundScheduler()
 
 class GracefulKiller:
   kill_now = False
-  def __init__(self, thread):
+  def __init__(self, thread, scheduler, controller):
     self.thread = thread
+    self.scheduler = scheduler
+    self.controller = controller
     signal.signal(signal.SIGINT, self.exit_gracefully)
     signal.signal(signal.SIGTERM, self.exit_gracefully)
 
   def exit_gracefully(self, *args):
+    print(args)
     self.kill_now = True
+    self.scheduler.shutdown()
     self.thread.join()
+    self.controller.stop()
 
 @app.route('/')
 def index():
@@ -30,7 +35,7 @@ def run_flask():
 def run():
   controller = Controller.build()
   thread = threading.Thread(target=run_flask)
-  killer = GracefulKiller(thread)
+  killer = GracefulKiller(thread, scheduler, controller)
   controller.start_display()
   scheduler.add_job(controller.start_display, 'interval', seconds=5)
   print('iniciou jobs')
@@ -38,6 +43,3 @@ def run():
   thread.start()
   while not killer.kill_now:
     controller.start_sensor()
-  controller.stop()
-  scheduler.shutdown()
-
