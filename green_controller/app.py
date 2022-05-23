@@ -10,18 +10,14 @@ scheduler = BackgroundScheduler()
 
 class GracefulKiller:
   kill_now = False
-  def __init__(self, thread, scheduler, controller):
-    self.thread = thread
+  def __init__(self, scheduler):
     self.scheduler = scheduler
-    self.controller = controller
     signal.signal(signal.SIGINT, self.exit_gracefully)
     signal.signal(signal.SIGTERM, self.exit_gracefully)
 
   def exit_gracefully(self, *args):
     self.kill_now = True
     self.scheduler.shutdown()
-    self.thread.join()
-    self.controller.stop()
 
 @app.route('/')
 def index():
@@ -42,3 +38,5 @@ def run():
   thread.start()
   while not killer.kill_now:
     controller.start_sensor()
+  controller.stop()
+  thread.join()
