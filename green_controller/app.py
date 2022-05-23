@@ -18,10 +18,11 @@ class GracefulKiller:
     signal.signal(signal.SIGTERM, self.exit_gracefully)
 
   def exit_gracefully(self, *args):
-    self.controller.stop()
+    print(args)
+    self.scheduler.shutdown()
     self.kill_now = True
     self.thread.join()
-    self.scheduler.shutdown()
+    self.controller.stop()
 
 @app.route('/')
 def index():
