@@ -1,6 +1,6 @@
 from .controller import Controller
 from time import sleep
-import multiprocessing
+import threading
 import signal
 from flask import Flask
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -22,18 +22,19 @@ def index():
   return 'Hello world'
 
 def run_flask():
-  app.run(debug=True, host='0.0.0.0')
+  print('flask foi')
+  app.run(debug=True, host='0.0.0.0', suse_reloader=False)
 
 def run():
   controller = Controller.build()
   killer = GracefulKiller()
-  server = multiprocessing.Process(target=run_flask)
-  server.start()
-  scheduler.add_job(controller.start_display, 'interval', seconds=4)
+  scheduler.add_job(controller.start_display, 'interval', seconds=3)
+  print('iniciou jobs')
   scheduler.start()
+  server = threading.Thread(target=run_flask)
+  server.start()
   while not killer.kill_now:
     controller.start_sensor()
-  server.terminate()
   server.join()
   controller.stop()
   scheduler.shutdown()
