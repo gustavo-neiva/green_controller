@@ -29,12 +29,8 @@ def run():
   server = multiprocessing.Process(target=run_flask)
   server.start()
   while not killer.kill_now:
-    controller.start_sensor()
-    display_thread = Thread(target=controller.start_display())
-    display_thread.start()
+    controller.start()
   server.terminate()
-  display_thread.terminate()
   server.join()
-  display_thread.join()
   controller.stop()
 
