@@ -36,22 +36,23 @@ class Controller:
         self.counter = 0
         self.ip = self.parse_ip()
         self.first_sensor = True
+        self.info_display = False
 
     def start_sensor_display(self):
-        if self.first_sensor:
+        if self.first_sensor and not self.info_display:
             humidity, temperature, sensor_id = self.repository.get_last_measurement(
                 1)
             self.view.display_sensor_data(temperature, humidity, sensor_id)
             self.first_sensor = False
-            return
-        humidity, temperature, sensor_id = self.repository.get_last_measurement(
-            2)
-        self.view.display_sensor_data(temperature, humidity, sensor_id)
-        self.first_sensor = False
-        return
-
-    def start_info_display(self):
-        self.view.display_controller_info(self.ip)
+        elif not self.first_sensor and not self.info_display:
+            humidity, temperature, sensor_id = self.repository.get_last_measurement(
+                2)
+            self.view.display_sensor_data(temperature, humidity, sensor_id)
+            self.info_display = True
+        else:
+            self.view.display_controller_info(self.ip)
+            self.first_sensor = True
+            self.info_display = False
 
     def start_sensor(self, id):
         humidity, temperature = asyncio.run(
