@@ -40,6 +40,7 @@ def run():
     scheduler.start()
     thread.start()
     while not killer.kill_now:
-        controller.start_sensor()
+        controller.start_sensor(1)
+        controller.start_sensor(2)
     controller.stop()
     thread.join()
