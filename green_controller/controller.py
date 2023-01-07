@@ -38,7 +38,7 @@ class Controller:
         self.first_sensor = True
         self.info_display = False
 
-    def start_sensor_display(self):
+    def start_display(self):
         if self.first_sensor and not self.info_display:
             humidity, temperature, sensor_id = self.repository.get_last_measurement(
                 1)

@@ -35,9 +35,8 @@ def run():
     controller = Controller.build()
     thread = threading.Thread(target=run_flask)
     killer = GracefulKiller(scheduler)
-    controller.start_sensor_display()
-    scheduler.add_job(controller.start_sensor_display, 'interval', seconds=5)
-    scheduler.add_job(controller.start_info_display, 'interval', seconds=10)
+    controller.start_display()
+    scheduler.add_job(controller.start_display, 'interval', seconds=5)
     scheduler.start()
     thread.start()
     while not killer.kill_now:
