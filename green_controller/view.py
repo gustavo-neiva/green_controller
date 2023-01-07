@@ -13,11 +13,13 @@ class View:
         self.display = display
 
     def display_sensor_data(self, temperature, humidity, sensor_id):
+        self.display.clear()
         temp = f'{temperature:0.2f}*C id={sensor_id}'
         umidade = f'Umidade={humidity:0.2f}%'
         self._print(temp, umidade)
 
     def display_controller_info(self, ip):
+        self.display.clear()
         ip = f'IP={ip}'
         hour = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self._print(ip, hour)
