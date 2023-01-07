@@ -13,9 +13,9 @@ class View:
         self.display = display
         self.flag = True
 
-    def display_data(self, temperature, humidity, ip):
+    def display_data(self, temperature, humidity, ip, sensor_id):
         if self.flag:
-            temp = f'Temp.={temperature:0.2f}*C'
+            temp = f'Temp.={temperature:0.2f}*C Sensor={sensor_id}'
             umidade = f'Umidade={humidity:0.2f}%'
             self._print(temp, umidade)
             self.flag = False
