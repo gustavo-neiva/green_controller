@@ -12,6 +12,8 @@ VENT_1 = 13
 LUZ_2 = 6
 VENT_2 = 5
 relay_gpio_ids = [LUZ_1, VENT_1, LUZ_2, VENT_2]
+DHT_SENSOR_1_PIN = 4
+DHT_SENSOR_2_PIN = 14
 
 
 class Controller:
@@ -34,13 +36,18 @@ class Controller:
         self.ip = self.parse_ip()
 
     def start_display(self):
-        humidity, temperature = self.repository.get_last_measurement()
-        self.view.display_data(temperature, humidity, self.ip)
+        humidity, temperature, sensor_id = self.repository.get_last_measurement()
+        self.view.display_data(temperature, humidity, self.ip, sensor_id)
 
     def start_sensor(self):
-        humidity, temperature = asyncio.run(self.sensor.read())
-        print(humidity, temperature)
-        self.repository.save_measurement(humidity, temperature)
+        humidity_1, temperature_1 = asyncio.run(
+            self.sensor.read(DHT_SENSOR_1_PIN))
+        print(humidity_1, temperature_1)
+        self.repository.save_measurement(humidity_1, temperature_1, 1)
+        humidity_2, temperature_2 = asyncio.run(
+            self.sensor.read(DHT_SENSOR_2_PIN))
+        print(humidity_2, temperature_2)
+        self.repository.save_measurement(humidity_2, temperature_1, 2)
 
     def stop(self):
         self.view.turn_off()
