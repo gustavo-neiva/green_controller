@@ -11,19 +11,16 @@ class View:
 
     def __init__(self, display):
         self.display = display
-        self.flag = True
 
-    def display_data(self, temperature, humidity, ip, sensor_id):
-        if self.flag:
-            temp = f'{temperature:0.2f}*C id={sensor_id}'
-            umidade = f'Umidade={humidity:0.2f}%'
-            self._print(temp, umidade)
-            self.flag = False
-            return
+    def display_sensor_data(self, temperature, humidity, sensor_id):
+        temp = f'{temperature:0.2f}*C id={sensor_id}'
+        umidade = f'Umidade={humidity:0.2f}%'
+        self._print(temp, umidade)
+
+    def display_controller_info(self, ip):
         ip = f'IP={ip}'
         hour = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         self._print(ip, hour)
-        self.flag = True
 
     def turn_off(self):
         self.display.clear()

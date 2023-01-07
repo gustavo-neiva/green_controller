@@ -8,8 +8,9 @@ class Repository:
             humidity=humidity, temperature=temperature, sensor_id=sensor_id)
         data.save()
 
-    def get_last_measurement(self):
-        last_measurement = Measurements.select().order_by(Measurements.id.desc()).get()
+    def get_last_measurement(self, id):
+        last_measurement = Measurements.select().order_by(
+            Measurements.id.desc()).where(Measurements.sensor_id == id).get()
         humidity = last_measurement.humidity
         temperature = last_measurement.temperature
         sensor_id = last_measurement.sensor_id
