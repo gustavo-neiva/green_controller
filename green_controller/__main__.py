@@ -5,9 +5,9 @@ from .server import run_flask
 
 
 def start_controller():
-    t = threading.Thread(target=run)
-    t.daemon = True
-    t.start()
+    thread = threading.Thread(target=run)
+    thread.daemon = True
+    thread.start()
 
 
 if __name__ == '__main__':
