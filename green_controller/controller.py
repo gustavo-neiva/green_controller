@@ -57,7 +57,6 @@ class Controller:
     def start_sensor(self, id):
         humidity, temperature = asyncio.run(
             self.sensor.read(sensors[id]))
-        print(humidity, temperature)
         self.repository.save_measurement(humidity, temperature, id)
 
     def stop(self):

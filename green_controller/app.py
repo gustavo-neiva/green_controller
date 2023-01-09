@@ -2,45 +2,37 @@ from .controller import Controller
 from time import sleep
 import threading
 import signal
-from flask import Flask
+import logging
 from apscheduler.schedulers.background import BackgroundScheduler
 
-app = Flask(__name__)
 scheduler = BackgroundScheduler()
+event = threading.Event()
 
 
 class GracefulKiller:
     kill_now = False
 
-    def __init__(self, scheduler):
+    def __init__(self, scheduler, controller):
         self.scheduler = scheduler
+        self.controller = controller
         signal.signal(signal.SIGINT, self.exit_gracefully)
         signal.signal(signal.SIGTERM, self.exit_gracefully)
 
     def exit_gracefully(self, *args):
+        print('terminando o programa ********* shutting down')
         self.kill_now = True
         self.scheduler.shutdown()
-
-
-@app.route('/')
-def index():
-    return 'Hello world'
-
-
-def run_flask():
-    app.run(debug=True, host='0.0.0.0', use_reloader=False, threaded=True)
+        print('scheduler finalizado')
+        self.controller.stop()
+        print('finalizadoooooo')
 
 
 def run():
     controller = Controller.build()
-    thread = threading.Thread(target=run_flask)
-    killer = GracefulKiller(scheduler)
+    killer = GracefulKiller(scheduler, controller)
     controller.start_display()
     scheduler.add_job(controller.start_display, 'interval', seconds=5)
     scheduler.start()
-    thread.start()
     while not killer.kill_now:
         controller.start_sensor(1)
         controller.start_sensor(2)
-    controller.stop()
-    thread.join()
