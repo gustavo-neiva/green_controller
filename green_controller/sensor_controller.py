@@ -10,7 +10,6 @@ class SensorController:
 
     async def read(self, pin):
         humidity, temperature = Adafruit_DHT.read_retry(self.sensor, pin)
-        print(humidity, temperature)
         if humidity is not None and temperature is not None:
             await asyncio.sleep(1)
             return humidity, temperature

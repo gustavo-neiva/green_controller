@@ -4,6 +4,7 @@ from green_controller.model import *
 class Repository:
 
     def save_measurement(self, humidity, temperature, sensor_id):
+        print(humidity, temperature, sensor_id)
         data = Measurements.create(
             humidity=humidity, temperature=temperature, sensor_id=sensor_id)
         data.save()
